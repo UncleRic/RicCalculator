@@ -68,7 +68,6 @@ class MainViewController: UIViewController {
         }
     }
     
-    
     // -----------------------------------------------------------------------------------------------------
     
     @IBAction func zeroAction(sender: AnyObject) {
@@ -82,32 +81,45 @@ class MainViewController: UIViewController {
     // -----------------------------------------------------------------------------------------------------
     @IBAction func decimalPointAction(sender: UIButton) {
         //TODO: - CHECK FOR ERRORNEOUS NUMBER-ENTRY LIKE: '.9876.'
-        //        let pattern = ".[0-9]+."
+        
         if clearDisplay {
             self.equationLabel.text = ""
             clearDisplay = false
         }
-        let str = self.equationLabel.text!
+        
+        var str = self.equationLabel.text!
+        
+        // Checking for existing '.' at end of display text.  Toggle off if true:
         if str > "" {
-            //            let regExp = NSRegularExpression(pattern: pattern, options: NSRegularExpressionOptions.CaseInsensitive, error: nil)
-            //            let range = NSMakeRange(0, (str as NSString).length)
-            
-            // Only allow decimal point to be added if it doesn't fit the stated duplicate-decimal/numeral pattern:
-            
-            //            if let numberMatches = regExp?.numberOfMatchesInString(str, options: NSMatchingOptions(0), range: range)
-            //                where numberMatches == 0 {
             let index = count(str)-1 as Int
             let lastChar = (str as NSString).substringFromIndex(index)
             if lastChar == "." {
                 self.equationLabel.text = (str as NSString).substringToIndex(index)
-            } else {
-                self.equationLabel.text = self.equationLabel.text! + "."
+                return
             }
-            //            }
         } else {
             self.equationLabel.text = "."
+            return
+        }
+        
+        // -----------------------------------------------------------------
+        // No decimal found.  Check if added decimal would create an erroneous numberal (e.g., '.1234.'):
+        
+        str = self.equationLabel.text! + "."  // ...decimal needs to be included to determine proper display text.
+        
+        let pattern = "\\.\\d+\\."
+        let regExp = NSRegularExpression(pattern: pattern, options: NSRegularExpressionOptions.CaseInsensitive, error: nil)
+        let range = NSMakeRange(0, (str as NSString).length)
+        
+        // Only allow decimal point to be added if it doesn't fit the stated duplicate-decimal/numeral pattern:
+        
+        if let numberMatches = regExp?.numberOfMatchesInString(str, options: NSMatchingOptions(0), range: range)
+            where numberMatches == 0 {
+                self.equationLabel.text = self.equationLabel.text! + "."
         }
     }
+    
+    // -----------------------------------------------------------------------------------------------------
     
     @IBAction func equalsAction(sender: UIButton) {
         let eqn = equationLabel.text!
