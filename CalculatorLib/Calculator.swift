@@ -36,20 +36,20 @@ public class Calculator {
     // -----------------------------------------------------------------------------------------------------
     
     public func fetchHistory() -> [String]? {
+        var historyItems = [String]()
         let context = self.context
         let historyEntity = NSEntityDescription.entityForName("History", inManagedObjectContext: context!)
         
         let fetchRequest = NSFetchRequest()
         fetchRequest.entity = historyEntity
-
+        
         var results: [AnyObject]?
         do {
             results = try context!.executeFetchRequest(fetchRequest)
         } catch _ {
-            
+            return nil
         }
         
-        var historyItems = [String]()
         let resultCount = results!.count
         
         if resultCount > 0 {
@@ -61,7 +61,9 @@ public class Calculator {
             if let myHistory = results?.last as? History {
                 context!.deleteObject(myHistory)
                 do {
-                    try context!.save()
+                    if context!.hasChanges {
+                        try context!.save()
+                    }
                 } catch _ {
                 }
             }
@@ -72,27 +74,30 @@ public class Calculator {
     // -----------------------------------------------------------------------------------------------------
     
     public func clearHistory() -> Bool {
-//        let fetchRequest = NSFetchRequest(entityName: "History")
-//        fetchRequest.includesSubentities = false
-//        var error:NSError?
-//        do {
-//            let objects = context!.executeFetchRequest(fetchRequest) as? [NSManagedObject] {
-//                for each in objects! {
-//                    context!.deleteObject(each)
-//                } catch _ {
-//                    return false
-//                }
-//                do {
-//                    try context!.save()
-//                    return true
-//                } catch _ {
-//                    return false
-//                }
-//            }
-//        }
+        let fetchRequest = NSFetchRequest(entityName: "History")
+        fetchRequest.includesSubentities = false
+        do {
+            let objects = try context!.executeFetchRequest(fetchRequest) as? [NSManagedObject] //{
+            if nil != objects {
+                for each in objects! {
+                    context!.deleteObject(each)
+                    do {
+                        try context!.save()
+                        return true
+                    } catch _ {
+                        return false
+                    }
+                }
+            }
+            
+        } catch _ {
+            print("*** Context Fetch Request failed.  ***")
+            return false
+        }
         
         return true
     }
+    
     // -----------------------------------------------------------------------------------------------------
     // MARK: - Local Core-Data Access:
     
@@ -104,9 +109,9 @@ public class Calculator {
         history.equation = eqn
         do {
             try context!.save()
-            print("Saved!")
+            print("New-Entry Saved!")
         } catch _ {
-            print("Not Saved.")
+            print("New-Entry Not Saved.")
         }
     }
     

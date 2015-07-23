@@ -16,7 +16,7 @@
 		188553931B3F336000302CD6 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 188553911B3F336000302CD6 /* LaunchScreen.xib */; };
 		1885539F1B3F336000302CD6 /* RicCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1885539E1B3F336000302CD6 /* RicCalculatorTests.swift */; };
 		188553A91B3F338300302CD6 /* Calculator Assignment.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 188553A81B3F338300302CD6 /* Calculator Assignment.pdf */; };
-		188553AB1B3F33BE00302CD6 /* README.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 188553AA1B3F33BE00302CD6 /* README.rtf */; };
+		188553AB1B3F33BE00302CD6 /* README.rtfd in Resources */ = {isa = PBXBuildFile; fileRef = 188553AA1B3F33BE00302CD6 /* README.rtfd */; };
 		188553B61B3F34BC00302CD6 /* CalculatorLib.h in Headers */ = {isa = PBXBuildFile; fileRef = 188553B51B3F34BC00302CD6 /* CalculatorLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		188553C81B3F34BC00302CD6 /* CalculatorLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 188553B11B3F34BC00302CD6 /* CalculatorLib.framework */; };
 		188553C91B3F34BC00302CD6 /* CalculatorLib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 188553B11B3F34BC00302CD6 /* CalculatorLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -68,7 +68,7 @@
 		1885539D1B3F336000302CD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1885539E1B3F336000302CD6 /* RicCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RicCalculatorTests.swift; sourceTree = "<group>"; };
 		188553A81B3F338300302CD6 /* Calculator Assignment.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Calculator Assignment.pdf"; sourceTree = "<group>"; };
-		188553AA1B3F33BE00302CD6 /* README.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = README.rtf; sourceTree = "<group>"; };
+		188553AA1B3F33BE00302CD6 /* README.rtfd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.rtfd; path = README.rtfd; sourceTree = "<group>"; };
 		188553B11B3F34BC00302CD6 /* CalculatorLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CalculatorLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		188553B41B3F34BC00302CD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		188553B51B3F34BC00302CD6 /* CalculatorLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalculatorLib.h; sourceTree = "<group>"; };
@@ -108,7 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				188553A81B3F338300302CD6 /* Calculator Assignment.pdf */,
-				188553AA1B3F33BE00302CD6 /* README.rtf */,
+				188553AA1B3F33BE00302CD6 /* README.rtfd */,
 				188553821B3F336000302CD6 /* RicCalculator */,
 				1885539B1B3F336000302CD6 /* RicCalculatorTests */,
 				188553B21B3F34BC00302CD6 /* CalculatorLib */,
@@ -171,8 +171,8 @@
 			isa = PBXGroup;
 			children = (
 				188553B51B3F34BC00302CD6 /* CalculatorLib.h */,
-				188553B31B3F34BC00302CD6 /* Supporting Files */,
 				188553D31B3F36C500302CD6 /* Calculator.swift */,
+				188553B31B3F34BC00302CD6 /* Supporting Files */,
 			);
 			path = CalculatorLib;
 			sourceTree = "<group>";
@@ -323,7 +323,7 @@
 				1885538E1B3F336000302CD6 /* Main.storyboard in Resources */,
 				188553931B3F336000302CD6 /* LaunchScreen.xib in Resources */,
 				188553901B3F336000302CD6 /* Images.xcassets in Resources */,
-				188553AB1B3F33BE00302CD6 /* README.rtf in Resources */,
+				188553AB1B3F33BE00302CD6 /* README.rtfd in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
