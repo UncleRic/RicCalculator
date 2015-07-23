@@ -24,7 +24,7 @@ public class Calculator {
     public func processEquation(eqn:String) -> String {
         let cleansedEqu = codeCleansing(eqn)
         if cleansedEqu > "" {
-            var expn = NSExpression(format:eqn)
+            let expn = NSExpression(format:eqn)
             let result = (expn.expressionValueWithObject(nil, context: nil) as! NSNumber).floatValue
             newEntry(eqn)
             return "\(result)"
@@ -39,22 +39,31 @@ public class Calculator {
         let context = self.context
         let historyEntity = NSEntityDescription.entityForName("History", inManagedObjectContext: context!)
         
-        var fetchRequest = NSFetchRequest()
+        let fetchRequest = NSFetchRequest()
         fetchRequest.entity = historyEntity
-        var error: NSError?
-        var results = context!.executeFetchRequest(fetchRequest, error: &error)
+
+        var results: [AnyObject]?
+        do {
+            results = try context!.executeFetchRequest(fetchRequest)
+        } catch _ {
+            
+        }
+        
         var historyItems = [String]()
         let resultCount = results!.count
         
         if resultCount > 0 {
             for index in 0...(resultCount-1) {
                 historyItems.append(results![index].equation)
-                println(results![index].equation)
+                print(results![index].equation)
             }
             
             if let myHistory = results?.last as? History {
                 context!.deleteObject(myHistory)
-                context!.save(nil)
+                do {
+                    try context!.save()
+                } catch _ {
+                }
             }
         }
         return historyItems
@@ -63,21 +72,27 @@ public class Calculator {
     // -----------------------------------------------------------------------------------------------------
     
     public func clearHistory() -> Bool {
-        let fetchRequest = NSFetchRequest(entityName: "History")
-        fetchRequest.includesSubentities = false
-        var error:NSError?
+//        let fetchRequest = NSFetchRequest(entityName: "History")
+//        fetchRequest.includesSubentities = false
+//        var error:NSError?
+//        do {
+//            let objects = context!.executeFetchRequest(fetchRequest) as? [NSManagedObject] {
+//                for each in objects! {
+//                    context!.deleteObject(each)
+//                } catch _ {
+//                    return false
+//                }
+//                do {
+//                    try context!.save()
+//                    return true
+//                } catch _ {
+//                    return false
+//                }
+//            }
+//        }
         
-        if let objects = context!.executeFetchRequest(fetchRequest, error: &error) as? [NSManagedObject] {
-            for each in objects {
-                context!.deleteObject(each)
-            }
-        } else {
-            println()
-        }
-        
-        return context!.save(nil)
+        return true
     }
-    
     // -----------------------------------------------------------------------------------------------------
     // MARK: - Local Core-Data Access:
     
@@ -87,10 +102,11 @@ public class Calculator {
         
         let history = History(entity: historyEntity!, insertIntoManagedObjectContext: context)
         history.equation = eqn
-        if context!.save(nil) {
-            println("Saved!")
-        } else {
-            println("Not Saved.")
+        do {
+            try context!.save()
+            print("Saved!")
+        } catch _ {
+            print("Not Saved.")
         }
     }
     
@@ -99,21 +115,27 @@ public class Calculator {
     func codeCleansing(origString:String) -> String {
         let pattern = "(?<=\\d)(?=\\()|(?<=\\))(?=\\d)"
         
-        var revisedString = NSMutableString(string: origString)
+        let revisedString = NSMutableString(string: origString)
         let range = NSMakeRange(0, revisedString.length)
         
         revisedString.replaceOccurrencesOfString(")(", withString: ")*(", options: .LiteralSearch, range: range)
         
         var error: NSError? = nil
-        let regex = NSRegularExpression(pattern: pattern, options: nil, error: &error)
+        let regex: NSRegularExpression?
+        do {
+            regex = try NSRegularExpression(pattern: pattern, options: [])
+        } catch let error1 as NSError {
+            error = error1
+            regex = nil
+        }
         
         if (nil != error) {
             let userInfo = error?.userInfo
-            println(userInfo)
+            print(userInfo)
             return ""
         }
         
-        regex?.replaceMatchesInString(revisedString, options: NSMatchingOptions.allZeros,
+        regex?.replaceMatchesInString(revisedString, options: NSMatchingOptions(),
             range: NSMakeRange(0, revisedString.length),
             withTemplate: "*")
         

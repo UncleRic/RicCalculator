@@ -33,7 +33,7 @@ class MainViewController: UIViewController {
         let historyItems = gCalculator!.fetchHistory()
         
         if historyItems != nil && historyItems!.count > 0 {
-            println(historyItems)
+            print(historyItems)
         }
         
         return
@@ -91,7 +91,7 @@ class MainViewController: UIViewController {
         
         // Checking for existing '.' at end of display text.  Toggle off if true:
         if str > "" {
-            let index = count(str)-1 as Int
+            let index = str.characters.count-1 as Int
             let lastChar = (str as NSString).substringFromIndex(index)
             if lastChar == "." {
                 self.equationLabel.text = (str as NSString).substringToIndex(index)
@@ -108,12 +108,17 @@ class MainViewController: UIViewController {
         str = self.equationLabel.text! + "."  // ...decimal needs to be included to determine proper display text.
         
         let pattern = "\\.\\d+\\."
-        let regExp = NSRegularExpression(pattern: pattern, options: NSRegularExpressionOptions.CaseInsensitive, error: nil)
+        let regExp: NSRegularExpression?
+        do {
+            regExp = try NSRegularExpression(pattern: pattern, options: NSRegularExpressionOptions.CaseInsensitive)
+        } catch _ {
+            regExp = nil
+        }
         let range = NSMakeRange(0, (str as NSString).length)
         
         // Only allow decimal point to be added if it doesn't fit the stated duplicate-decimal/numeral pattern:
         
-        if let numberMatches = regExp?.numberOfMatchesInString(str, options: NSMatchingOptions(0), range: range)
+        if let numberMatches = regExp?.numberOfMatchesInString(str, options: NSMatchingOptions(rawValue: 0), range: range)
             where numberMatches == 0 {
                 self.equationLabel.text = self.equationLabel.text! + "."
         }
@@ -173,7 +178,7 @@ extension MainViewController:UICollectionViewDelegate {
             if clear {
                 var str = self.equationLabel.text!
                 if str > "" {
-                    let index = count(str)-1 as Int
+                    let index = str.characters.count-1 as Int
                     str = (str as NSString).substringToIndex(index)
                     self.equationLabel.text = str
                 }
@@ -190,7 +195,7 @@ extension MainViewController:UICollectionViewDelegate {
             } else if percent {
                 let str = self.equationLabel.text!
                 if str > "" {
-                    let index = count(str)-1 as Int
+                    let index = str.characters.count-1 as Int
                     let lastChar = (str as NSString).substringFromIndex(index)
                     if lastChar == "%" {
                         self.equationLabel.text = (str as NSString).substringToIndex(index)
@@ -203,7 +208,7 @@ extension MainViewController:UICollectionViewDelegate {
             let str = self.equationLabel.text!
             if divide {
                 if str > "" {
-                    let index = count(str)-1 as Int
+                    let index = str.characters.count-1 as Int
                     let lastChar = (str as NSString).substringFromIndex(index)
                     if lastChar == "/" {
                         self.equationLabel.text = (str as NSString).substringToIndex(index)
@@ -213,7 +218,7 @@ extension MainViewController:UICollectionViewDelegate {
                 }
             } else if multiply {
                 if str > "" {
-                    let index = count(str)-1 as Int
+                    let index = str.characters.count-1 as Int
                     let lastChar = (str as NSString).substringFromIndex(index)
                     if lastChar == "*" {
                         self.equationLabel.text = (str as NSString).substringToIndex(index)
@@ -223,7 +228,7 @@ extension MainViewController:UICollectionViewDelegate {
                 }
             } else if subtract {
                 if str > "" {
-                    let index = count(str)-1 as Int
+                    let index = str.characters.count-1 as Int
                     let lastChar = (str as NSString).substringFromIndex(index)
                     if lastChar == "-" {
                         self.equationLabel.text = (str as NSString).substringToIndex(index)
@@ -232,7 +237,7 @@ extension MainViewController:UICollectionViewDelegate {
                     }
                 }
             } else if add {
-                let index = count(str)-1 as Int
+                let index = str.characters.count-1 as Int
                 let lastChar = (str as NSString).substringFromIndex(index)
                 if lastChar == "+" {
                     self.equationLabel.text = (str as NSString).substringToIndex(index)
@@ -302,7 +307,7 @@ extension MainViewController:UICollectionViewDataSource {
             cell.cellLabel.text = "+"
             
         default:
-            println("")
+            print("")
         }
         
         return cell as UICollectionViewCell
