@@ -131,7 +131,6 @@ class MainViewController: UIViewController {
         
         if eqn > "" {
             equationLabel.text = gCalculator!.processEquation(eqn)
-            clearDisplay = true
         }
     }
     
